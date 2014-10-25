@@ -10,7 +10,7 @@
     state=installed
   with_items:
     - unzip
-    - jq
+#    - jq
 
 - name: download consul
   get_url: >
