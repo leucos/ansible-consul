@@ -20,7 +20,7 @@
   "datacenter": "{{ consul_datacenter }}",
   "rejoin_after_leave": {{ "true" if consul_rejoin_after_leave else "false" }},
 {% if consul_is_server and consul_bootstrap is defined %}
-  "bootstrap": {{ "true" if consul_bootstrap else "false" }}
+  "bootstrap": {{ "true" if consul_bootstrap else "false" }},
 {% endif %}
 {% if consul_is_server and consul_bootstrap_expect is defined %}
   "bootstrap_expect": {{ consul_bootstrap_expect }},
