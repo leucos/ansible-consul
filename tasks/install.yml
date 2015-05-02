@@ -1,10 +1,10 @@
 ---
-- name: update apt
+- name: Update apt
   apt: >
     update_cache=yes
     cache_valid_time=3600
 
-- name: install deps
+- name: Install deps
   apt: >
     pkg={{item}}
     state=installed
@@ -12,13 +12,13 @@
     - unzip
 #    - jq
 
-- name: download consul
+- name: Download consul
   get_url: >
     url={{consul_download}}
     dest={{consul_download_folder}}
   register: consul_was_downloaded
 
-- name: create consul directory
+- name: Create consul directory
   file: >
     state=directory
     path={{ item }}
@@ -28,24 +28,24 @@
     - "{{ consul_home }}/bin"
     - "{{ consul_config_dir }}"
 
-- name: copy and unpack
+- name: Copy and unpack
   unarchive: >
     src={{ consul_download_folder }}/{{ consul_archive }}
     dest={{ consul_home }}/bin
     copy=no
   when: consul_was_downloaded|changed
 
-- name: create consul group
+- name: Create consul group
   group: >
     name={{consul_group}}
     state=present
 
-- name: create consul user
+- name: Create consul user
   user: >
     name={{consul_user}}
     group={{consul_group}}
 
-- name: set ownership
+- name: Set file ownership
   file: >
     state=directory
     path={{consul_home}}
@@ -54,7 +54,7 @@
     recurse=yes
   when: consul_was_downloaded|changed
 
-- name: copy consul upstart script
+- name: Copy consul upstart script
   template: >
     src=consul.conf.j2
     dest=/etc/init/consul.conf
@@ -62,7 +62,7 @@
     group={{consul_group}}
     mode=0755
 
-- name: add consul to path through profile.d
+- name: Add consul to path through profile.d
   template: >
     src=consul.sh.j2
     dest=/etc/profile.d/consul.sh
@@ -70,7 +70,7 @@
     group=root
     mode=0755
 
-- name: copy consulkv script
+- name: Copy consulkv script
   template: >
     src=consulkv.j2
     dest={{consul_home}}/bin/consulkv
@@ -78,10 +78,11 @@
     group={{consul_group}}
     mode=0755
 
-- name: consul config file
+- name: Add consul config file
   template: >
     src=consul.json.j2
     dest={{ consul_config_file }}
     owner={{consul_user}}
     group={{consul_group}}
     mode=0755
+

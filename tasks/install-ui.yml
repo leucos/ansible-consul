@@ -1,17 +1,17 @@
-- name: download consul
+- name: Download consul UI
   get_url: >
     url={{consul_ui_download}}
     dest={{consul_download_folder}}
   register: consul_ui_was_downloaded
 
-- name: copy and unpack
+- name: Copy and unpack
   unarchive: >
     src={{ consul_download_folder }}/{{ consul_ui_archive }}
     dest={{ consul_home }}
     copy=no
   when: consul_ui_was_downloaded|changed
 
-- name: set ownership
+- name: Set file ownership
   file: >
     state=directory
     path={{consul_ui_dir}}
@@ -20,7 +20,7 @@
     recurse=yes
   when: consul_ui_was_downloaded|changed
 
-- name: consul nginx config
+- name: Adds consul nginx config
   template: >
     src=consul-nginx.conf.j2
     dest=/etc/nginx/sites-available/consul
@@ -29,9 +29,9 @@
     mode=0755
   when: consul_is_ui
   notify:
-    - restart nginx  
+    - Restart nginx
 
-- name: consul nginx config
+- name: Enables consul nginx config
   file: >
     state=link
     src=/etc/nginx/sites-available/consul
@@ -41,14 +41,5 @@
     mode=0755
   when: consul_is_ui and consul_enable_nginx_config
   notify:
-  - restart nginx
+    - Restart nginx
 
-- name: create nginx home
-  file: >
-    state=directory
-    path=/var/www/consul/htdocs
-    owner=root
-    group=root
-    mode=0755
-  notify:
-    - restart nginx
