@@ -1,6 +1,4 @@
 ---
-- include: install.yml
-- { include: install-ui.yml, when: consul_is_ui == true }
-- include: dnsmasq.yml
-- include: consulate.yml
-- include: service.yml
+- include: install.yml tags=consul
+- { include: install-ui.yml tags=consul,consul-ui, when: consul_is_ui == true }
+- include: service.yml tags=consul
