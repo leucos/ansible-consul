@@ -10,7 +10,7 @@
     state=installed
   with_items:
     - unzip
-#    - jq
+    - jq
 
 - name: Download consul
   get_url: >
@@ -32,7 +32,7 @@
   unarchive: >
     src={{ consul_download_folder }}/{{ consul_archive }}
     dest={{ consul_home }}/bin
-    copy=no
+    copy=yes
   when: consul_was_downloaded|changed
 
 - name: Create consul group
