@@ -29,6 +29,7 @@
   "encrypt": "{{ consul_encrypt_key }}",
 {% endif %}
 {% if consul_watches is defined %}
-  "watches": {{ consul_watches|to_nice_json }}
+  "watches": {{ consul_watches|to_nice_json }},
 {% endif %}
+  "syslog_facility": "LOCAL0"
 }
